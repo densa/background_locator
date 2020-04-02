@@ -109,8 +109,10 @@ static void callback(LocationDto locationDto) async {
 ```swift
 import background_locator
 
-func registerPlugins(registry: FlutterPluginRegistry) -> () {
-    GeneratedPluginRegistrant.register(with: registry)
+private func registerPlugins(registry: FlutterPluginRegistry) {
+    if (!registry.hasPlugin("BackgroundLocatorPlugin")) {
+       BackgroundLocatorPlugin.register(with: registry.registrar(forPlugin: "BackgroundLocatorPlugin"))
+    }
 }
 
 @UIApplicationMain
