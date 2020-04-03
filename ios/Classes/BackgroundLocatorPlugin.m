@@ -30,6 +30,8 @@ NSString *ARG_ALTITUDE = @"altitude";
 NSString *ARG_SPEED = @"speed";
 NSString *ARG_SPEED_ACCURACY = @"speed_accuracy";
 NSString *ARG_HEADING = @"heading";
+NSString *ARG_TIMESTAMP = @"timestamp";
+NSString *ARG_DIR = @"directory";
 NSString *ARG_CALLBACK = @"callback";
 NSString *ARG_LOCATION = @"location";
 NSString *ARG_SETTINGS = @"settings";
@@ -105,6 +107,8 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 #pragma mark LocationManagerDelegate Methods
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     for (int i = 0; i < locations.count; i++) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+        NSString *documentsDirectory = paths.firstObject;
         CLLocation *location = [locations objectAtIndex:i];
         NSDictionary<NSString*,NSNumber*>* locationMap = @{
                                                            ARG_LATITUDE: @(location.coordinate.latitude),
@@ -112,7 +116,9 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
                                                            ARG_ACCURACY: @(location.horizontalAccuracy),
                                                            ARG_ALTITUDE: @(location.altitude),
                                                            ARG_SPEED: @(location.speed),
+                                                           ARG_TIMESTAMP: @(location.timestamp.timeIntervalSince1970),
                                                            ARG_SPEED_ACCURACY: @(0.0),
+                                                           ARG_DIR: documentsDirectory,
                                                            ARG_HEADING: @(location.course),
                                                            };
         if (initialized) {
